@@ -1,0 +1,60 @@
+# Day 10 - SQL Advent Calendar
+
+## Question:
+
+You are tracking your friends' New Year’s resolution progress. Write a query to calculate the following for each friend:
+
+- **Number of resolutions** they made.
+- **Number of resolutions** they completed.
+- **Success percentage**: The percentage of resolutions completed out of the total resolutions.
+- **Success category** based on the success percentage:
+  - **Green**: If success percentage is greater than 75%.
+  - **Yellow**: If success percentage is between 50% and 75% (inclusive).
+  - **Red**: If success percentage is less than 50%.
+
+### Tables:
+
+**`resolutions`**  
+| resolution_id | friend_name | resolution           | is_completed |
+|---------------|-------------|----------------------|--------------|
+| 1             | Alice       | Exercise daily       | 1            |
+| 2             | Alice       | Read 20 books        | 0            |
+| 3             | Bob         | Save money           | 0            |
+| 4             | Bob         | Eat healthier        | 1            |
+| 5             | Charlie     | Travel more          | 1            |
+| 6             | Charlie     | Learn a new skill    | 1            |
+| 7             | Diana       | Volunteer monthly    | 1            |
+| 8             | Diana       | Drink more water     | 0            |
+| 9             | Diana       | Sleep 8 hours        | 1            |
+
+---
+
+## Answer:
+
+To calculate the required statistics, we will:
+1. Count the total number of resolutions (`num_resolutions`).
+2. Count the completed resolutions (`num_completed`).
+3. Calculate the success percentage.
+4. Classify each friend's success based on the percentage.
+
+Here is the SQL query to achieve this:
+
+```sql
+-- Day 10 - SQL Advent Calendar
+
+-- Track New Year's resolution progress for friends
+
+SELECT
+    friend_name,
+    COUNT(resolution_id) AS num_resolutions,                 
+    SUM(CASE WHEN is_completed = 1 THEN 1 ELSE 0 END) AS num_completed, 
+    ROUND(SUM(CASE WHEN is_completed = 1 THEN 1 ELSE 0 END) * 100.0 / COUNT(resolution_id), 2) AS success_percentage, 
+    CASE 
+        WHEN SUM(CASE WHEN is_completed = 1 THEN 1 ELSE 0 END) * 100.0 / COUNT(resolution_id) > 75 THEN 'Green'
+        WHEN SUM(CASE WHEN is_completed = 1 THEN 1 ELSE 0 END) * 100.0 / COUNT(resolution_id) BETWEEN 50 AND 75 THEN 'Yellow'
+        ELSE 'Red'
+    END AS success_category 
+FROM resolutions
+GROUP BY friend_name
+ORDER BY friend_name;
+``
