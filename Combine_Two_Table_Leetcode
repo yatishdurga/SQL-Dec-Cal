@@ -1,0 +1,48 @@
+-- LeetCode SQL Problem: Combine Person and Address Information
+-- ------------------------------------------------------------
+-- Description:
+-- Given two tables: `Person` and `Address`, write a SQL query to
+-- get the first name, last name, city, and state from these two tables.
+
+-- The output should include all persons, even if they do not have 
+-- a corresponding address (use LEFT JOIN).
+
+-- Schema:
+-- Person Table:
+-- +----------+----------+-----------+
+-- | personId | lastName | firstName|
+-- +----------+----------+-----------+
+-- | 1        | Wang     | Allen     |
+-- | 2        | Alice    | Bob       |
+-- +----------+----------+-----------+
+
+-- Address Table:
+-- +-----------+----------+---------------+-------------+
+-- | addressId | personId | city          | state       |
+-- +-----------+----------+---------------+-------------+
+-- | 1         | 2        | New York City | New York    |
+-- | 2         | 3        | Leetcode      | California  |
+-- +-----------+----------+---------------+-------------+
+
+-- Expected Output:
+-- +-----------+----------+---------------+-------------+
+-- | firstName | lastName | city          | state       |
+-- +-----------+----------+---------------+-------------+
+-- | Allen     | Wang     | Null          | Null        |
+-- | Bob       | Alice    | New York City | New York    |
+-- +-----------+----------+---------------+-------------+
+
+-- Explanation:
+-- PersonId = 1 has no matching address, so city and state are null.
+-- PersonId = 2 is matched with addressId = 1.
+
+-- Query:
+SELECT 
+    firstName,
+    lastName,
+    city,
+    state
+FROM 
+    Person
+LEFT JOIN 
+    Address ON Person.personId = Address.personId;
