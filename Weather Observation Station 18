@@ -1,0 +1,15 @@
+
+
+ Manhattan Distance p1(a,b) and p2(c,d)
+
+MAX(LAT_N): Finds the highest latitude (northernmost point).
+
+MIN(LAT_N): Finds the lowest latitude (southernmost point).
+
+MAX(LONG_W): Finds the highest longitude (westernmost point).
+
+MIN(LONG_W): Finds the lowest longitude (easternmost point).
+
+
+
+SELECT ROUND(ABS(MAX(LAT_N) - MIN(LAT_N)) + ABS(MAX(LONG_W) - MIN(LONG_W)), 4) FROM STATION
