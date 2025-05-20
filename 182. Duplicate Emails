@@ -36,3 +36,12 @@ Output:
 | a@b.com |
 +---------+
 Explanation: a@b.com is repeated two times.
+
+
+
+Solution:
+
+SELECT EMAIL FROM PERSON
+GROUP BY EMAIL
+HAVING COUNT(EMAIL)>1;
+
