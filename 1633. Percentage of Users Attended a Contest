@@ -10,8 +10,7 @@ user_id is the primary key (column with unique values) for this table.
 Each row of this table contains the name and the id of a user.
  
 
-Table: Register
-
+Register
 +-------------+---------+
 | Column Name | Type    |
 +-------------+---------+
