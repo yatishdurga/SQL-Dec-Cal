@@ -1,0 +1,67 @@
+Table Name Subscriber: 
+CustomeriD | month | PlanValue |
+1 01-05-2023 499 
+1 01-04-2023 599
+1 02-03-2023 799 
+2 01-09-2023 499
+2 01-07-2023 599 
+2 0204-2023 799
+3 0101-2023 499 
+3 01-04-2023 599
+3 0207-2023 799
+4 01-04-2023 499 
+4 01-09-2023 599
+4 0210-2023 799 
+
+
+Number of unique customers : 
+
+select COUNT(distinct customer_id) from subscribers ;
+
+
+For each customer calculate ,min and max spend :
+
+select customer_id, min(PlanValue),max(PlanValue) 
+from subscribers 
+group by customer_id ;
+
+
+write a query to find customer : 
+
+(i) upgraded at least once in their life time 
+(ii) downgraded at lease once in their life time 
+
+
+WITH plan_changes AS (
+    SELECT
+        customer_id,
+        plan_level,
+        change_date,
+        LAG(plan_level) OVER (
+            PARTITION BY customer_id
+            ORDER BY change_date
+        ) AS previous_plan
+    FROM customer_plan_history
+)
+
+SELECT
+    customer_id
+FROM plan_changes
+GROUP BY customer_id
+HAVING
+    -- Customer upgraded at least once
+    SUM(CASE
+            WHEN plan_level > previous_plan THEN 1
+            ELSE 0
+        END) > 0
+
+    AND
+
+    -- Customer downgraded at least once
+    SUM(CASE
+            WHEN plan_level < previous_plan THEN 1
+            ELSE 0
+        END) > 0;
+
+
+
